@@ -10,11 +10,13 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
 var serviceBusService;
+var AppInsights = require("applicationinsights");
 
 server.listen(port, function () {
   console.log('Server listening at port %d', port);  
   mongoose.connect('mongodb://Mongo:52IbFIuHpnZ1To4D2LA4_Wosa4BlbNJ9OHaO4uPssVc-@ds062797.mongolab.com:62797/Mongo'); //process.env.CUSTOMCONNSTR_MONGO_URI
   serviceBusService = azure.createServiceBusService('Endpoint=sb://greenbus.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=E4WVvyjW05/zLUJEQBIHNVKyCKlTHyNQhmBeHBTtFDI=')
+  AppInsights.setup("f5062a91-6654-42e7-bd99-d955cb92cfe2").start();
 });
 
 // Routing
