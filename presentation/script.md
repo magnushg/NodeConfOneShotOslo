@@ -15,7 +15,7 @@ The story of Nodejs and Azure
 * Deploy nodejs applications to Web / API sites
 * Visual studio node tools is awesome
 * Visual studio code
------------------------------
+
 Create a chat site with a Nodejs back-end, deploy to Azure
 ----------------------------------------------------------
 * might as well be doing this on a mac
@@ -28,7 +28,6 @@ Create a chat site with a Nodejs back-end, deploy to Azure
 * `git push azure master`
 * `azure site set -w` Enable web sockets
 * Browse to site with `azure site browse`
-* Show portal http://portal.azure.com
 
 Hooking in MongoDb hosted in Azure
 ----------------------------------
@@ -37,6 +36,7 @@ Hooking in MongoDb hosted in Azure
 * Paste connection uri into web site connection strings, run `azure site connectionstring add mongo_uri mongodb://Mongo:52IbFIuHpnZ1To4D2LA4_Wosa4BlbNJ9OHaO4uPssVc-@ds062797.mongolab.com:62797/Mongo Custom`
 * Logging in console window, `azure site log tail awesome-chat`
 * `npm install azure --save`
+* Show portal http://portal.azure.com
 * Connect to Azure Service Bus Queue
 * node queuereceiver\queue.js
 
