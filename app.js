@@ -7,8 +7,12 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
 
+var mongoose = require('mongoose');
+var chatMessage = require('./models/chatMessage.js');
+
 server.listen(port, function () {
   console.log('Server listening at port %d', port);
+  mongoose.connect('mongodb://Mongo:52IbFIuHpnZ1To4D2LA4_Wosa4BlbNJ9OHaO4uPssVc-@ds062797.mongolab.com:62797/Mongo'); //process.env.CUSTOMCONNSTR_MONGO_URI
 });
 
 // Routing
@@ -23,12 +27,25 @@ io.on('connection', function (socket) {
   var addedUser = false;
   // when the client emits 'new message', this listens and executes
   socket.on('new message', function (data) {
+    saveMessage(socket.username, data);
     // we tell the client to execute 'new message'
     socket.broadcast.emit('new message', {
       username: socket.username,
       message: data
     });
   });
+  
+  function saveMessage(username, message) {
+    var newChatMessage = new chatMessage();
+    newChatMessage.userName = username;
+    newChatMessage.chatMessage = message;
+    newChatMessage.save(function savedTask(err) {
+      if(err) {
+        throw err;
+      }
+      console.log('Chat message from ' + newChatMessage.userName + ' saved');
+    });
+  }
   
   // when the client emits 'add user', this listens and executes
   socket.on('add user', function (username) {
