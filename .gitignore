@@ -29,8 +29,5 @@ node_modules
 #slides
 presentation
 
-#queueReceiver
-queueReceiver
-
 #type information
 typings

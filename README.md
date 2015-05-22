@@ -6,7 +6,7 @@ Intro
 -----
 * Bouvet
 * Johnny-five / Arduino / Raspberry
-* Statkraft / Web API -> TypeScript -> Knockout -> Gulp -> Bower -> Karma
+* Statkraft / Web API -> TypeSacript -> Knockout -> Gulp -> Bower -> Karma
 
 The story of Nodejs and Azure
 * Supported since 2011
@@ -30,6 +30,9 @@ Create a chat site with a Nodejs back-end, deploy to Azure
 * Browse to site with `azure site browse`
 * Show portal http://portal.azure.com
 * Logging in console window, `azure site log tail awesome-chat`
+* `npm install applicationinsights`
+* `import AppInsights = require("applicationinsights");`
+* `AppInsights.setup("f5062a91-6654-42e7-bd99-d955cb92cfe2").start();`
 
 Hooking in MongoDb hosted in Azure
 ----------------------------------
@@ -38,7 +41,7 @@ Hooking in MongoDb hosted in Azure
 * Move forward in git repo, add mongo view model and mongo saving code.
 * npm install azure 
 * Connect to Azure Service Bus Queue
-* 
+* node queuereceiver\queue.js
 
 Why use Azure for nodejs apps? How is it different from the competition
 -----------------------------------------------------------------------

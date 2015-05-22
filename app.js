@@ -1,16 +1,16 @@
 /// <reference path="typings/node/node.d.ts"/>
 /// <reference path="typings/tsd.d.ts"/>
 // Setup basic express server
-var mongoose = require('mongoose');
-var chatMessage = require('./models/chatMessage.js');
 var express = require('express');
-var azure = require('azure');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
 var serviceBusService;
+var mongoose = require('mongoose');
+var chatMessage = require('./models/chatMessage.js');
 var AppInsights = require("applicationinsights");
+var azure = require('azure');
 
 server.listen(port, function () {
   console.log('Server listening at port %d', port);  
@@ -32,28 +32,36 @@ io.on('connection', function (socket) {
   // when the client emits 'new message', this listens and executes
   socket.on('new message', function (data) {
     // we tell the client to execute 'new message'
-    var newChatMessage = new chatMessage();
-    newChatMessage.userName = socket.username;
-    newChatMessage.chatMessage = data;
-    newChatMessage.save(function savedTask(err) {
-      if(err) {
-        throw err;
-      }
-      console.log('new chat message from user ' + newChatMessage.userName);
-    });
-    var message = {
-    body: socket.username + ': ' + data,
-    };
-    serviceBusService.sendQueueMessage('chatqueue', message, function(error){
-    if(!error){
-        console.log('Message queued');
-    }
-});
+    saveMessage(socket.username, data);
+    enqueueMessage(socket.username, data);
     socket.broadcast.emit('new message', {
       username: socket.username,
       message: data
     });
   });
+  
+  function saveMessage(username, message) {
+    var newChatMessage = new chatMessage();
+    newChatMessage.userName = username;
+    newChatMessage.chatMessage = message;
+    newChatMessage.save(function savedTask(err) {
+      if(err) {
+        throw err;
+      }
+      console.log('Chat message from ' + newChatMessage.userName + ' saved');
+    });
+  }
+  
+  function enqueueMessage(username, message) {
+    var messageToEnqueue = {
+    body: username + ': ' + message
+    };
+    serviceBusService.sendQueueMessage('chatqueue', messageToEnqueue, function(error){
+      if(!error){
+          console.log('Message enqueued');
+      }
+     });
+  }
 
   // when the client emits 'add user', this listens and executes
   socket.on('add user', function (username) {
