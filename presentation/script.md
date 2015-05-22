@@ -35,7 +35,7 @@ Hooking in MongoDb hosted in Azure
 * `npm install mongoose --save`
 * Get MongoLab uri from "connection info"
 * Paste connection uri into web site connection strings, run `azure site connectionstring add mongo_uri mongodb://Mongo:52IbFIuHpnZ1To4D2LA4_Wosa4BlbNJ9OHaO4uPssVc-@ds062797.mongolab.com:62797/Mongo Custom`
-* Move forward in git repo, add mongo view model and mongo saving code.
+* Logging in console window, `azure site log tail awesome-chat`
 * `npm install azure --save`
 * Connect to Azure Service Bus Queue
 * node queuereceiver\queue.js
