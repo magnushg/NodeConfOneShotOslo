@@ -22,15 +22,13 @@ Create a chat site with a Nodejs back-end, deploy to Azure
 * `npm install azure-cli -g`, Microsoft Azure Cross Platform Command Line tool
 * `azure account download`
 * `azure account import publishsettings.publishsettings`* 
-* `git init`
 * `azure site create awesome-chat --git`, username magnusg
 * `git add --all`
 * `git commit -am "Initial commit"`
 * `git push azure master`
-* `azure site set -w`
+* `azure site set -w` Enable web sockets
 * Browse to site with `azure site browse`
 * Show portal http://portal.azure.com
-* Logging in console window, `azure site log tail awesome-chat`
 
 Hooking in MongoDb hosted in Azure
 ----------------------------------

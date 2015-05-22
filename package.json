@@ -7,7 +7,9 @@
   "private": true,
   "license": "BSD",
   "dependencies": {
+    "azure": "^0.10.6",
     "express": "3.4.8",
+    "mongoose": "^4.0.3",
     "socket.io": "1.3.5"
   },
   "engines": {
