@@ -10,9 +10,13 @@ var port = process.env.PORT || 3000;
 var mongoose = require('mongoose');
 var chatMessage = require('./models/chatMessage.js');
 
+var azure = require('azure');
+var serviceBusService;
+
 server.listen(port, function () {
   console.log('Server listening at port %d', port);
   mongoose.connect('mongodb://Mongo:52IbFIuHpnZ1To4D2LA4_Wosa4BlbNJ9OHaO4uPssVc-@ds062797.mongolab.com:62797/Mongo'); //process.env.CUSTOMCONNSTR_MONGO_URI
+  serviceBusService = azure.createServiceBusService('Endpoint=sb://greenbus.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=E4WVvyjW05/zLUJEQBIHNVKyCKlTHyNQhmBeHBTtFDI=');
 });
 
 // Routing
@@ -28,6 +32,7 @@ io.on('connection', function (socket) {
   // when the client emits 'new message', this listens and executes
   socket.on('new message', function (data) {
     saveMessage(socket.username, data);
+    enqueueMessage(socket.username, data);
     // we tell the client to execute 'new message'
     socket.broadcast.emit('new message', {
       username: socket.username,
@@ -45,6 +50,17 @@ io.on('connection', function (socket) {
       }
       console.log('Chat message from ' + newChatMessage.userName + ' saved');
     });
+  }
+  
+  function enqueueMessage(username, message) {
+    var messageToEnqueue = {
+    body: username + ': ' + message
+    };
+    serviceBusService.sendQueueMessage('chatqueue', messageToEnqueue, function(error){
+      if(!error){
+          console.log('Message enqueued');
+      }
+     });
   }
   
   // when the client emits 'add user', this listens and executes
